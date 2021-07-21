@@ -36,10 +36,10 @@ class FactureClass():
 
 
 def main():
-    print("ahoj")
-    #facture_name="doklady-CZ-06_2021-DPH"
-    #facture=FactureClass(facture_name,14)
-    #facture.export_xml()
+    facture_name="doklady-CZ-06_2021-DPH"
+    facture=FactureClass(facture_name,14)
+    facture.export_xml()
+    print("DONE")
 
 
 
