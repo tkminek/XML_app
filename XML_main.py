@@ -1,7 +1,7 @@
 import pandas as pd
 from tqdm import tqdm,trange
 from time import sleep
-
+from ares_util.ares import call_ares
 
 class FactureClass():
     def __init__(self,nazev,index,poc_cislo_faktury,excel_list):
@@ -30,11 +30,12 @@ class FactureClass():
         
     def client_info(self):
         self._C_ico = self._df.iloc[self._index].loc['Ico']
-        self._C_company="Pepa Novotny .sro"
-        self._C_city="Frýdeku-Místek"
-        self._C_street="Zelena 328"
-        self._C_zip="987654321"
-        self._C_dic="999999"    
+        self._client_dict=call_ares(str(int(self._C_ico)))
+        self._C_company=self._client_dict["legal"]["company_name"]
+        self._C_city=self._client_dict["address"]["city"]
+        self._C_street=self._client_dict["address"]["street"]
+        self._C_zip=self._client_dict["address"]["zip_code"]
+        self._C_dic=self._client_dict["legal"]["company_vat_id"]
 
     def export_xml(self):
         file_temp=open("TEMP/TEMP_prijata.xml","r")
@@ -96,7 +97,7 @@ def excel_info(facture_name,excel_list):
 
 def main():
     facture_name="doklady-CZ-06_2021-DPH"
-    excel_list="EK RCH"    
+    excel_list="EK RCH"
     poc_cislo_faktury=1
     index_zacatku=13
     index_konce=excel_info(facture_name,excel_list)
@@ -112,7 +113,7 @@ def main():
         poc_cislo_faktury+=1
         sleep(0.02)        
     end_info(facture_name)
-
+    print("XML FILE EXPORT DONE")
 
 
 
