@@ -22,12 +22,12 @@
 				<inv:text>Prodej obilí</inv:text>
 				<inv:partnerIdentity>
 					<typ:address>
-						<typ:company>ADW AGRO, a.s.</typ:company>
-						<typ:city>Krahulov</typ:city>
-						<typ:street>Krahulov 76</typ:street>
-						<typ:zip>675 21</typ:zip>
-						<typ:ico>28348982</typ:ico>
-						<typ:dic>CZ28348982</typ:dic>
+						<typ:company>C_firm</typ:company>
+						<typ:city>C_city</typ:city>
+						<typ:street>C_street</typ:street>
+						<typ:zip>C_zip</typ:zip>
+						<typ:ico>C_ico</typ:ico>
+						<typ:dic>C_dic</typ:dic>
 					</typ:address>
 					<typ:shipToAddress>
 						<typ:company></typ:company>

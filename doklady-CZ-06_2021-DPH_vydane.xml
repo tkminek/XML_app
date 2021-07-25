@@ -14,7 +14,7 @@
 				<inv:date>2021-06-14</inv:date>
 				<inv:dateTax>2021-06-14</inv:dateTax>
 				<inv:dateDue>2021-06-14</inv:dateDue>
-				<inv:numberKHDPH>PH9-2021018910</inv:numberKHDPH>
+				<inv:numberKHDPH>11100584.0</inv:numberKHDPH>
 				<inv:accounting>
 					<typ:ids>1Pzboží</typ:ids>
 				</inv:accounting>
@@ -24,12 +24,12 @@
 				<inv:text>Prodej obilí</inv:text>
 				<inv:partnerIdentity>
 					<typ:address>
-						<typ:company>ADW AGRO, a.s.</typ:company>
-						<typ:city>Krahulov</typ:city>
-						<typ:street>Krahulov 76</typ:street>
-						<typ:zip>675 21</typ:zip>
-						<typ:ico>28348982</typ:ico>
-						<typ:dic>CZ28348982</typ:dic>
+						<typ:company>Aporéma CZ s.r.o.</typ:company>
+						<typ:city>Frýdek-Místek</typ:city>
+						<typ:street>Potoèní 1094</typ:street>
+						<typ:zip>73801</typ:zip>
+						<typ:ico>27830322.0</typ:ico>
+						<typ:dic>CZ27830322</typ:dic>
 					</typ:address>
 					<typ:shipToAddress>
 						<typ:company></typ:company>

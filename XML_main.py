@@ -3,6 +3,7 @@ from tqdm import tqdm,trange
 from time import sleep
 from ares_util.ares import call_ares
 import os
+import numpy
 
 class FactureClass():
     def __init__(self,nazev,index,poc_cislo_faktury,excel_list):
@@ -14,9 +15,6 @@ class FactureClass():
         datum_p=self._df.iloc[self._index].loc['Datum']
         self._castka=self._df.iloc[self._index].loc['Fremdwährung']
         self._cislo_faktury=self._df.iloc[self._index].loc['Referenz']
-        print(self._df.iloc[self._index].loc['Referenz'])
-        # if self._cislo_faktury == "nan":
-        #     self._cislo_faktury = self._df.iloc[self._index].loc['Belegnr']
         self._poc_cislo_faktury=poc_cislo_faktury
         self._datum=str(datum_p.split(".")[2])+"-"+str(datum_p.split(".")[1])+"-"+str(datum_p.split(".")[0])
 
@@ -81,6 +79,8 @@ class FactureClass():
     def export_vydana_xml(self):
         file_temp=open("TEMP/TEMP_vydana.xml","r")
         facture_file=open(str(self._nazev)+"_vydane.xml","a")
+        if len(str(self._cislo_faktury))==3:
+               self._cislo_faktury = self._df.iloc[self._index].loc['Belegnr']
         for row in file_temp:
             zmena_dict={
                 "<typ:numberRequested>pohoda_facture_number</typ:numberRequested>":"<typ:numberRequested>"+str(self._poc_cislo_faktury)+"</typ:numberRequested>",
@@ -88,7 +88,13 @@ class FactureClass():
                 "<inv:date>datum</inv:date>": "<inv:date>" + str(self._datum) + "</inv:date>",
                 "<inv:dateTax>datum</inv:dateTax>": "<inv:dateTax>" + str(self._datum) + "</inv:dateTax>",
                 "<inv:dateDue>datum</inv:dateDue>": "<inv:dateDue>" + str(self._datum) + "</inv:dateDue>",
-                "<inv:numberKHDPH>facture_number</inv:numberKHDPH>":"<inv:numberKHDPH>"+str(self._cislo_faktury)+"</inv:numberKHDPH>"
+                "<inv:numberKHDPH>facture_number</inv:numberKHDPH>":"<inv:numberKHDPH>"+str(self._cislo_faktury)+"</inv:numberKHDPH>",
+                "<typ:company>C_firm</typ:company>":"<typ:company>" + str(self._C_company) + "</typ:company>",
+                "<typ:city>C_city</typ:city>": "<typ:city>" + str(self._C_city) + "</typ:city>",
+                "<typ:street>C_street</typ:street>": "<typ:street>" + str(self._C_street) + "</typ:street>",
+                "<typ:zip>C_zip</typ:zip>": "<typ:zip>" + str(self._C_zip) + "</typ:zip>",
+                "<typ:ico>C_ico</typ:ico>": "<typ:ico>" + str(self._C_ico) + "</typ:ico>",
+                "<typ:dic>C_dic</typ:dic>": "<typ:dic>" + str(self._C_dic) + "</typ:dic>"
 
 
                     }
@@ -121,12 +127,12 @@ def excel_info(facture_name,excel_list):
 def main():
     path=os.getcwd()
     facture_name=os.listdir(path+"\FACTURES")[0].split(".")[:-1][0]
-    # #   PRIJATE FAKTURY   #
+    #   PRIJATE FAKTURY   #
     # excel_list="EK RCH"
     # poc_cislo_faktury_prijate=1
     # index_zacatku_prijate=13
     # index_konce_prijate=excel_info(facture_name,excel_list)
-    # start_info(facture_name)
+    # start_info(facture_name+"_prijate")
     # p_bar= tqdm([x for x in range(index_zacatku_prijate,index_konce_prijate-1)])
     # for i in p_bar:
     #     info=f"Faktura prijata cislo: {i+2}"
@@ -137,7 +143,7 @@ def main():
     #     facture.export_prijata_xml()
     #     poc_cislo_faktury_prijate+=1
     #     sleep(0.02)
-    # end_info(facture_name)
+    # end_info(facture_name+"_prijate")
     # print("XML FILE EXPORT : prijate faktury - DONE")
     #   VYDANE FAKTURY   #
     excel_list="VK RCH"
