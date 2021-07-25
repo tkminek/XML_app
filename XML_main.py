@@ -2,6 +2,7 @@ import pandas as pd
 from tqdm import tqdm,trange
 from time import sleep
 from ares_util.ares import call_ares
+import os
 
 class FactureClass():
     def __init__(self,nazev,index,poc_cislo_faktury,excel_list):
@@ -93,10 +94,11 @@ def excel_info(facture_name,excel_list):
     return(index_konce)
 
 
-        
 
 def main():
-    facture_name="doklady-CZ-06_2021-DPH"
+    path=os.getcwd()
+    facture_name=os.listdir(path+"\FACTURES")[0].split(".")[:-1][0]
+    print(facture_name)
     excel_list="EK RCH"
     poc_cislo_faktury=1
     index_zacatku=13
