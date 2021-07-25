@@ -11,9 +11,12 @@ class FactureClass():
         self._index=index
         self._excel = pd.read_excel("FACTURES/"+str(self._nazev)+".xlsx",sheet_name=excel_list) 
         self._df= pd.DataFrame(self._excel)
-        datum_p=self._df.iloc[index].loc['Datum']
-        self._castka=self._df.iloc[index].loc['Fremdwährung']
-        self._cislo_faktury=self._df.iloc[index].loc['Referenz']
+        datum_p=self._df.iloc[self._index].loc['Datum']
+        self._castka=self._df.iloc[self._index].loc['Fremdwährung']
+        self._cislo_faktury=self._df.iloc[self._index].loc['Referenz']
+        print(self._df.iloc[self._index].loc['Referenz'])
+        # if self._cislo_faktury == "nan":
+        #     self._cislo_faktury = self._df.iloc[self._index].loc['Belegnr']
         self._poc_cislo_faktury=poc_cislo_faktury
         self._datum=str(datum_p.split(".")[2])+"-"+str(datum_p.split(".")[1])+"-"+str(datum_p.split(".")[0])
 
@@ -38,9 +41,9 @@ class FactureClass():
         self._C_zip=self._client_dict["address"]["zip_code"]
         self._C_dic=self._client_dict["legal"]["company_vat_id"]
 
-    def export_xml(self):
+    def export_prijata_xml(self):
         file_temp=open("TEMP/TEMP_prijata.xml","r")
-        facture_file=open(str(self._nazev)+".xml","a")
+        facture_file=open(str(self._nazev)+"_prijate.xml","a")
         for row in file_temp:
             zmena_dict={
                         "<typ:numberRequested>pohoda_facture_number</typ:numberRequested>": "<typ:numberRequested>"+str(self._poc_cislo_faktury)+"</typ:numberRequested>",
@@ -75,7 +78,27 @@ class FactureClass():
                 facture_file.write(row)
         facture_file.close()
         file_temp.close()
-        
+    def export_vydana_xml(self):
+        file_temp=open("TEMP/TEMP_vydana.xml","r")
+        facture_file=open(str(self._nazev)+"_vydane.xml","a")
+        for row in file_temp:
+            zmena_dict={
+                "<typ:numberRequested>pohoda_facture_number</typ:numberRequested>":"<typ:numberRequested>"+str(self._poc_cislo_faktury)+"</typ:numberRequested>",
+                "<inv:symVar>pohoda_facture_number</inv:symVar>":"<inv:symVar>"+str(self._poc_cislo_faktury)+"</inv:symVar>",
+                "<inv:date>datum</inv:date>": "<inv:date>" + str(self._datum) + "</inv:date>",
+                "<inv:dateTax>datum</inv:dateTax>": "<inv:dateTax>" + str(self._datum) + "</inv:dateTax>",
+                "<inv:dateDue>datum</inv:dateDue>": "<inv:dateDue>" + str(self._datum) + "</inv:dateDue>",
+                "<inv:numberKHDPH>facture_number</inv:numberKHDPH>":"<inv:numberKHDPH>"+str(self._cislo_faktury)+"</inv:numberKHDPH>"
+
+
+                    }
+            if row.strip() in zmena_dict:
+                novy_radek=row.replace(row.strip(),zmena_dict[row.strip()])
+                facture_file.write(novy_radek)
+            else:
+                facture_file.write(row)
+        facture_file.close()
+        file_temp.close()
 
 def start_info(facture_name):
     facture_file=open(str(facture_name)+".xml","w+")
@@ -98,27 +121,43 @@ def excel_info(facture_name,excel_list):
 def main():
     path=os.getcwd()
     facture_name=os.listdir(path+"\FACTURES")[0].split(".")[:-1][0]
-    print(facture_name)
-    excel_list="EK RCH"
-    poc_cislo_faktury=1
-    index_zacatku=13
-    index_konce=excel_info(facture_name,excel_list)
-    start_info(facture_name)
-    p_bar= tqdm([x for x in range(index_zacatku,index_konce-1)])
+    # #   PRIJATE FAKTURY   #
+    # excel_list="EK RCH"
+    # poc_cislo_faktury_prijate=1
+    # index_zacatku_prijate=13
+    # index_konce_prijate=excel_info(facture_name,excel_list)
+    # start_info(facture_name)
+    # p_bar= tqdm([x for x in range(index_zacatku_prijate,index_konce_prijate-1)])
+    # for i in p_bar:
+    #     info=f"Faktura prijata cislo: {i+2}"
+    #     p_bar.set_description("Processing %s" %info)
+    #     facture=FactureClass(facture_name,i,poc_cislo_faktury_prijate,excel_list)
+    #     facture.vlastnik_info()
+    #     facture.client_info()
+    #     facture.export_prijata_xml()
+    #     poc_cislo_faktury_prijate+=1
+    #     sleep(0.02)
+    # end_info(facture_name)
+    # print("XML FILE EXPORT : prijate faktury - DONE")
+    #   VYDANE FAKTURY   #
+    excel_list="VK RCH"
+    poc_cislo_faktury_vydana=1
+    index_zacatku_vydana=1
+    index_konce_vydana=excel_info(facture_name,excel_list)
+    index_konce_vydana=3
+    start_info(facture_name+"_vydane")
+    p_bar= tqdm([x for x in range(index_zacatku_vydana,index_konce_vydana-1)])
     for i in p_bar:
-        info=f"Faktura cislo: {i+2}"
+        info=f"Faktura vydana cislo: {i+2}"
         p_bar.set_description("Processing %s" %info)
-        facture=FactureClass(facture_name,i,poc_cislo_faktury,excel_list)
+        facture=FactureClass(facture_name,i,poc_cislo_faktury_vydana,excel_list)
         facture.vlastnik_info()
         facture.client_info()
-        facture.export_xml()
-        poc_cislo_faktury+=1
-        sleep(0.02)        
-    end_info(facture_name)
-    print("XML FILE EXPORT DONE")
-
-
-
+        facture.export_vydana_xml()
+        poc_cislo_faktury_vydana+=1
+        sleep(0.02)
+    end_info(facture_name+"_vydane")
+    print("XML FILE EXPORT : vydane faktury - DONE")
 
 if __name__ == '__main__':
     main()
