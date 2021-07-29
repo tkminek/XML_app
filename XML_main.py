@@ -83,20 +83,27 @@ class FactureClass():
                self._cislo_faktury = self._df.iloc[self._index].loc['Belegnr']
         for row in file_temp:
             zmena_dict={
-                "<typ:numberRequested>pohoda_facture_number</typ:numberRequested>":"<typ:numberRequested>"+str(self._poc_cislo_faktury)+"</typ:numberRequested>",
-                "<inv:symVar>pohoda_facture_number</inv:symVar>":"<inv:symVar>"+str(self._poc_cislo_faktury)+"</inv:symVar>",
-                "<inv:date>datum</inv:date>": "<inv:date>" + str(self._datum) + "</inv:date>",
-                "<inv:dateTax>datum</inv:dateTax>": "<inv:dateTax>" + str(self._datum) + "</inv:dateTax>",
-                "<inv:dateDue>datum</inv:dateDue>": "<inv:dateDue>" + str(self._datum) + "</inv:dateDue>",
-                "<inv:numberKHDPH>facture_number</inv:numberKHDPH>":"<inv:numberKHDPH>"+str(self._cislo_faktury)+"</inv:numberKHDPH>",
-                "<typ:company>C_firm</typ:company>":"<typ:company>" + str(self._C_company) + "</typ:company>",
-                "<typ:city>C_city</typ:city>": "<typ:city>" + str(self._C_city) + "</typ:city>",
-                "<typ:street>C_street</typ:street>": "<typ:street>" + str(self._C_street) + "</typ:street>",
-                "<typ:zip>C_zip</typ:zip>": "<typ:zip>" + str(self._C_zip) + "</typ:zip>",
-                "<typ:ico>C_ico</typ:ico>": "<typ:ico>" + str(self._C_ico) + "</typ:ico>",
-                "<typ:dic>C_dic</typ:dic>": "<typ:dic>" + str(self._C_dic) + "</typ:dic>"
-
-
+                        "<typ:numberRequested>pohoda_facture_number</typ:numberRequested>":"<typ:numberRequested>"+str(self._poc_cislo_faktury)+"</typ:numberRequested>",
+                        "<inv:symVar>pohoda_facture_number</inv:symVar>":"<inv:symVar>"+str(self._poc_cislo_faktury)+"</inv:symVar>",
+                        "<inv:date>datum</inv:date>": "<inv:date>" + str(self._datum) + "</inv:date>",
+                        "<inv:dateTax>datum</inv:dateTax>": "<inv:dateTax>" + str(self._datum) + "</inv:dateTax>",
+                        "<inv:dateDue>datum</inv:dateDue>": "<inv:dateDue>" + str(self._datum) + "</inv:dateDue>",
+                        "<inv:numberKHDPH>facture_number</inv:numberKHDPH>":"<inv:numberKHDPH>"+str(self._cislo_faktury)+"</inv:numberKHDPH>",
+                        "<typ:company>C_firm</typ:company>":"<typ:company>" + str(self._C_company) + "</typ:company>",
+                        "<typ:city>C_city</typ:city>": "<typ:city>" + str(self._C_city) + "</typ:city>",
+                        "<typ:street>C_street</typ:street>": "<typ:street>" + str(self._C_street) + "</typ:street>",
+                        "<typ:zip>C_zip</typ:zip>": "<typ:zip>" + str(self._C_zip) + "</typ:zip>",
+                        "<typ:ico>C_ico</typ:ico>": "<typ:ico>" + str(self._C_ico) + "</typ:ico>",
+                        "<typ:dic>C_dic</typ:dic>": "<typ:dic>" + str(self._C_dic) + "</typ:dic>",
+                        "<typ:company>V_firm</typ:company>": "<typ:company>" + str(self._V_company) + "</typ:company>",
+                        "<typ:city>V_city</typ:city>": "<typ:city>" + str(self._V_city) + "</typ:city>",
+                        "<typ:street>V_street</typ:street>": "<typ:street>" + str(self._V_street) + "</typ:street>",
+                        "<typ:number>V_number</typ:number>": "<typ:number>" + str(self._V_number) + "</typ:number>",
+                        "<typ:zip>V_zip</typ:zip>": "<typ:zip>" + str(self._V_zip) + "</typ:zip>",
+                        "<typ:ico>V_ico</typ:ico>": "<typ:ico>" + str(self._V_ico) + "</typ:ico>",
+                        "<typ:dic>V_dic</typ:dic>": "<typ:dic>" + str(self._V_dic) + "</typ:dic>",
+                        "<typ:date>V_date</typ:date>":"<typ:date>"+str(self._datum)+"</typ:date>",
+                        "<typ:priceNone>V_price</typ:priceNone>":"<typ:priceNone>"+str(-1*(self._castka))+"</typ:priceNone>"
                     }
             if row.strip() in zmena_dict:
                 novy_radek=row.replace(row.strip(),zmena_dict[row.strip()])
@@ -122,35 +129,26 @@ def excel_info(facture_name,excel_list):
     index_konce = excel.shape[0]
     return(index_konce)
 
+def prijate_faktury(excel_list,poc_cislo_faktury_prijate,facture_name):
+    index_zacatku_prijate=0
+    index_konce_prijate=excel_info(facture_name,excel_list)
+    start_info(facture_name+"_prijate")
+    p_bar= tqdm([x for x in range(index_zacatku_prijate,index_konce_prijate-1)])
+    for i in p_bar:
+        info=f"Faktura prijata cislo: {i+2}"
+        p_bar.set_description("Processing %s" %info)
+        facture=FactureClass(facture_name,i,poc_cislo_faktury_prijate,excel_list)
+        facture.vlastnik_info()
+        facture.client_info()
+        facture.export_prijata_xml()
+        poc_cislo_faktury_prijate+=1
+        sleep(0.02)
+    end_info(facture_name+"_prijate")
+    print("XML FILE EXPORT : prijate faktury - DONE")
 
-
-def main():
-    path=os.getcwd()
-    facture_name=os.listdir(path+"\FACTURES")[0].split(".")[:-1][0]
-    #   PRIJATE FAKTURY   #
-    # excel_list="EK RCH"
-    # poc_cislo_faktury_prijate=1
-    # index_zacatku_prijate=13
-    # index_konce_prijate=excel_info(facture_name,excel_list)
-    # start_info(facture_name+"_prijate")
-    # p_bar= tqdm([x for x in range(index_zacatku_prijate,index_konce_prijate-1)])
-    # for i in p_bar:
-    #     info=f"Faktura prijata cislo: {i+2}"
-    #     p_bar.set_description("Processing %s" %info)
-    #     facture=FactureClass(facture_name,i,poc_cislo_faktury_prijate,excel_list)
-    #     facture.vlastnik_info()
-    #     facture.client_info()
-    #     facture.export_prijata_xml()
-    #     poc_cislo_faktury_prijate+=1
-    #     sleep(0.02)
-    # end_info(facture_name+"_prijate")
-    # print("XML FILE EXPORT : prijate faktury - DONE")
-    #   VYDANE FAKTURY   #
-    excel_list="VK RCH"
-    poc_cislo_faktury_vydana=1
-    index_zacatku_vydana=1
+def vydane_faktury(excel_list, poc_cislo_faktury_vydana,facture_name):
+    index_zacatku_vydana=0
     index_konce_vydana=excel_info(facture_name,excel_list)
-    index_konce_vydana=3
     start_info(facture_name+"_vydane")
     p_bar= tqdm([x for x in range(index_zacatku_vydana,index_konce_vydana-1)])
     for i in p_bar:
@@ -164,6 +162,14 @@ def main():
         sleep(0.02)
     end_info(facture_name+"_vydane")
     print("XML FILE EXPORT : vydane faktury - DONE")
+
+def main():
+    path=os.getcwd()
+    facture_name=os.listdir(path+"\FACTURES")[0].split(".")[:-1][0]
+    #   PRIJATE FAKTURY   #
+    prijate_faktury(excel_list="EK RCH", poc_cislo_faktury_prijate=1,facture_name=facture_name)
+    #   VYDANE FAKTURY   #
+    vydane_faktury(excel_list="VK RCH", poc_cislo_faktury_vydana=1, facture_name=facture_name)
 
 if __name__ == '__main__':
     main()
