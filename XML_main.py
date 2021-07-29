@@ -5,39 +5,84 @@ from ares_util.ares import call_ares
 import os
 import numpy
 
-class FactureClass():
-    def __init__(self,nazev,index,poc_cislo_faktury,excel_list):
-        self._poc_cislo_faktury=poc_cislo_faktury
-        self._nazev=nazev
-        self._index=index
-        self._excel = pd.read_excel("FACTURES/"+str(self._nazev)+".xlsx",sheet_name=excel_list) 
-        self._df= pd.DataFrame(self._excel)
-        datum_p=self._df.iloc[self._index].loc['Datum']
-        self._castka=self._df.iloc[self._index].loc['Fremdwährung']
-        self._cislo_faktury=self._df.iloc[self._index].loc['Referenz']
-        self._poc_cislo_faktury=poc_cislo_faktury
-        self._datum=str(datum_p.split(".")[2])+"-"+str(datum_p.split(".")[1])+"-"+str(datum_p.split(".")[0])
+class ExcelInfo():
+    def __init__(self,nazev,index,excel_list):
+        self._nazev = nazev
+        self._index = index
+        self._excel = pd.read_excel("FACTURES/" + str(self._nazev) + ".xlsx", sheet_name=excel_list)
+        self._df = pd.DataFrame(self._excel)
+        self._datum_p = self._df.iloc[self._index].loc['Datum']
+        self._castka= self._df.iloc[self._index].loc['Fremdwährung']
+        self._cislo_faktury= self._df.iloc[self._index].loc['Referenz']
+        self._datum= str(self._datum_p.split(".")[2]) + "-" + str(self._datum_p.split(".")[1]) + "-" + str(self._datum_p.split(".")[0])
+        self._cislo_faktury2 = self._df.iloc[self._index].loc['Belegnr']
 
-    def vlastnik_info(self):        
-        self._V_company="GUSTAV KINDT GMBH"
-        self._V_city="ELLERAU"
-        self._V_street="Moortwiete"
-        self._V_number="8"
-        self._V_zip="254 79"
-        self._V_ico ="682134908"
-        self._V_dic="CZ682134908"
-        self._V_acount_number="1390407379"
-        self._V_bank_code="0800"
-        self._V_note="-"
+    def main_info(self):
+        return {
+                "datum":self._datum,
+                "castka":self._castka,
+                "cislo_faktury":self._cislo_faktury,
+                "cislo_faktury2":self._cislo_faktury2,
+                "nazev":self._nazev,
+                "index":self._index
+                }
+
+    def vlastnik_info(self):
+        return {
+                "V_company":"GUSTAV KINDT GMBH",
+                "V_city" : "ELLERAU",
+                "V_street" : "Moortwiete",
+                "V_number" : "8",
+                "V_zip" : "254 79",
+                "V_ico" : "682134908",
+                "V_dic": "CZ682134908",
+                "V_acount_number": "1390407379",
+                "V_bank_code": "0800",
+                "V_note" : "-"
+                }
         
     def client_info(self):
-        self._C_ico = self._df.iloc[self._index].loc['Ico']
-        self._client_dict=call_ares(str(int(self._C_ico)))
-        self._C_company=self._client_dict["legal"]["company_name"]
-        self._C_city=self._client_dict["address"]["city"]
-        self._C_street=self._client_dict["address"]["street"]
-        self._C_zip=self._client_dict["address"]["zip_code"]
-        self._C_dic=self._client_dict["legal"]["company_vat_id"]
+        self._C_ico= self._df.iloc[self._index].loc['Ico']
+        self._client_dict= call_ares(str(int(self._C_ico)))
+        self._C_company= self._client_dict["legal"]["company_name"]
+        self._C_city= self._client_dict["address"]["city"]
+        self._C_street= self._client_dict["address"]["street"]
+        self._C_zip= self._client_dict["address"]["zip_code"]
+        self._C_dic= self._client_dict["legal"]["company_vat_id"]
+        return {
+                "C_ico":self._C_ico,
+                "C_company": self._C_company,
+                "C_city": self._C_city,
+                "C_street": self._C_street,
+                "C_zip": self._C_zip,
+                "C_dic": self._C_dic
+                }
+
+class ExportXML():
+    def __init__(self,main_dic,client_dic,vlastnik_dic,poc_cislo_faktury):
+        self._poc_cislo_faktury=poc_cislo_faktury
+        self._cislo_faktury=main_dic["cislo_faktury"]
+        self._cislo_faktury2 = main_dic["cislo_faktury2"]
+        self._datum = main_dic["datum"]
+        self._nazev= main_dic["nazev"]
+        self._index=main_dic["index"]
+        self._castka = main_dic["castka"]
+        self._C_ico = client_dic["C_ico"]
+        self._C_company = client_dic["C_company"]
+        self._C_city = client_dic["C_city"]
+        self._C_street = client_dic["C_street"]
+        self._C_zip = client_dic["C_zip"]
+        self._C_dic = client_dic["C_dic"]
+        self._V_ico = vlastnik_dic["V_ico"]
+        self._V_company = vlastnik_dic["V_company"]
+        self._V_city = vlastnik_dic["V_city"]
+        self._V_street = vlastnik_dic["V_street"]
+        self._V_number = vlastnik_dic["V_number"]
+        self._V_zip = vlastnik_dic["V_zip"]
+        self._V_dic = vlastnik_dic["V_dic"]
+        self._V_note = vlastnik_dic["V_note"]
+        self._V_acount_number = vlastnik_dic["V_acount_number"]
+        self._V_bank_code = vlastnik_dic["V_bank_code"]
 
     def export_prijata_xml(self):
         file_temp=open("TEMP/TEMP_prijata.xml","r")
@@ -76,11 +121,12 @@ class FactureClass():
                 facture_file.write(row)
         facture_file.close()
         file_temp.close()
+
     def export_vydana_xml(self):
         file_temp=open("TEMP/TEMP_vydana.xml","r")
         facture_file=open("OUTPUT/"+str(self._nazev)+"_vydane.xml","a")
         if len(str(self._cislo_faktury))==3:
-               self._cislo_faktury = self._df.iloc[self._index].loc['Belegnr']
+               self._cislo_faktury = self._cislo_faktury2
         for row in file_temp:
             zmena_dict={
                         "<typ:numberRequested>pohoda_facture_number</typ:numberRequested>":"<typ:numberRequested>"+str(self._poc_cislo_faktury)+"</typ:numberRequested>",
@@ -137,11 +183,14 @@ def prijate_faktury(excel_list,poc_cislo_faktury_prijate,facture_name):
     for i in p_bar:
         info=f"Faktura prijata cislo: {i+2}"
         p_bar.set_description("Processing %s" %info)
-        facture=FactureClass(facture_name,i,poc_cislo_faktury_prijate,excel_list)
-        facture.vlastnik_info()
-        facture.client_info()
-        facture.export_prijata_xml()
+        facture=ExcelInfo(facture_name,index_zacatku_prijate,excel_list)
+        main_dic=facture.main_info()
+        vlastnik_dic=facture.vlastnik_info()
+        client_dic=facture.client_info()
+        export_xml=ExportXML(main_dic,client_dic,vlastnik_dic,poc_cislo_faktury_prijate)
+        export_xml.export_prijata_xml()
         poc_cislo_faktury_prijate+=1
+        index_zacatku_prijate += 1
         sleep(0.02)
     end_info(facture_name+"_prijate")
     print("XML FILE EXPORT : prijate faktury - DONE")
@@ -154,18 +203,24 @@ def vydane_faktury(excel_list, poc_cislo_faktury_vydana,facture_name):
     for i in p_bar:
         info=f"Faktura vydana cislo: {i+2}"
         p_bar.set_description("Processing %s" %info)
-        facture=FactureClass(facture_name,i,poc_cislo_faktury_vydana,excel_list)
-        facture.vlastnik_info()
-        facture.client_info()
-        facture.export_vydana_xml()
+        facture = ExcelInfo(facture_name, index_zacatku_vydana, excel_list)
+        main_dic = facture.main_info()
+        vlastnik_dic = facture.vlastnik_info()
+        client_dic = facture.client_info()
+        export_xml = ExportXML(main_dic, client_dic, vlastnik_dic, poc_cislo_faktury_vydana)
+        export_xml.export_vydana_xml()
         poc_cislo_faktury_vydana+=1
+        index_zacatku_vydana+=1
         sleep(0.02)
     end_info(facture_name+"_vydane")
     print("XML FILE EXPORT : vydane faktury - DONE")
 
 def main():
     path=os.getcwd()
-    facture_name=os.listdir(path+"\FACTURES")[0].split(".")[:-1][0]
+    try:
+        facture_name=os.listdir(path+"\FACTURES")[0].split(".")[:-1][0]
+    except:
+        print("NO FACTURE EXCEl FILE IN ...\FACTURES")
     #   PRIJATE FAKTURY   #
     prijate_faktury(excel_list="EK RCH", poc_cislo_faktury_prijate=1,facture_name=facture_name)
     #   VYDANE FAKTURY   #
