@@ -41,7 +41,7 @@ class FactureClass():
 
     def export_prijata_xml(self):
         file_temp=open("TEMP/TEMP_prijata.xml","r")
-        facture_file=open(str(self._nazev)+"_prijate.xml","a")
+        facture_file=open("OUTPUT/"+str(self._nazev)+"_prijate.xml","a")
         for row in file_temp:
             zmena_dict={
                         "<typ:numberRequested>pohoda_facture_number</typ:numberRequested>": "<typ:numberRequested>"+str(self._poc_cislo_faktury)+"</typ:numberRequested>",
@@ -78,7 +78,7 @@ class FactureClass():
         file_temp.close()
     def export_vydana_xml(self):
         file_temp=open("TEMP/TEMP_vydana.xml","r")
-        facture_file=open(str(self._nazev)+"_vydane.xml","a")
+        facture_file=open("OUTPUT/"+str(self._nazev)+"_vydane.xml","a")
         if len(str(self._cislo_faktury))==3:
                self._cislo_faktury = self._df.iloc[self._index].loc['Belegnr']
         for row in file_temp:
@@ -114,13 +114,13 @@ class FactureClass():
         file_temp.close()
 
 def start_info(facture_name):
-    facture_file=open(str(facture_name)+".xml","w+")
+    facture_file=open("OUTPUT/"+str(facture_name)+".xml","w+")
     facture_file.write('<?xml version="1.0" encoding="Windows-1250"?>\n')
     facture_file.write('<dat:dataPack version="2.0" id="Usr01" ico="682134908" key="c63711ca-75a9-4c76-8fbf-f35940263e5a" programVersion="12804.4 (7.7.2021)" application="Transformace" note="Uživatelský export" xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd">\n')
     facture_file.close()
         
 def end_info(facture_name):
-    facture_file=open(str(facture_name)+".xml","a")
+    facture_file=open("OUTPUT/"+str(facture_name)+".xml","a")
     facture_file.write('\n</dat:dataPack>')
     facture_file.close()
         
