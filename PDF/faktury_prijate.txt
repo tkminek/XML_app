@@ -1,0 +1,171 @@
+pm“
+
+Faktura - daňový doklad č.FV2101106342
+NO L U 0 U U U
+
+Dodavatel: = Adresát;
+TOMGAST Czech Republic s.r.o.
+
+Bohumínská 1876/2
+735 06 Karviná - Nové Město
+
+ 
+
+  
+ 
+ 
+    
+      
+   
+ 
+ 
+ 
+  
+     
+
+IČ: 27765938 DIČ: CZ27765938
+
+     
+
+Sabo - Špalek, s.r.o.
+K Pastevníku 1197
+739 44 Brušperk
+
+sů
+OR platba
+
+Společnost zapsaná v obchodním rejstříku vedeném
+Krajským soudem v Ostravě, oddíl C, vložka 41313
+
+Odběratel:
+
+ 
+
+Sabo - Špalek, s.r.o.
+K Pastevníku 1197
+739 44 Brušperk
+
+  
+       
+     
+        
+      
+   
+   
+   
+ 
+      
+     
+
+Pobočka: p
+Kontaktní osoba: Vladimir Spalek
+Zakázky: ZP210900227
+Dodací listy:
+DL210109554, DL210109555, DL210109556, DL210109557, DL210109559,
+DL210109560, DL210109561, DL210109562, DL210109581, DL210109595,
+DL210109611, DL210109612, DL210109613, DL210109615, DL210109616,
+DL210109617, DL210109618, DL210109619, DL210109620, DL210109635,
+DL210109636, DL210109660, DL210109707, DL210109709, DL210109711,
+DL210109712, DL210109714, DL210109716, DL210109741, DL210109742,
+DL210109743, DL210109747, DL210109771, DL210109802
+Vystavil: Lenka Eftimiadu
+Telefon: +420 733 531 251
+Referent: Jozef Pavlík
+
+IČ: 06150250 DIČ: CZ06150250
+Společnost zapsaná v obchodním rejstříku vedeném
+Krajským soudem v Ostravě, oddíl C, vložka 70829
+
+Datum vystavení: 30.7.2021
+
+ 
+
+     
+       
+     
+        
+    
+
+  
+
+Bankovní spojení: 35-6696880217/0100
+Datum uskutečnění zdan. plnění: 30.7.2021 | SWIFT: KOMBCZPP
+Datum splatnosti: 2.8.2021 | Variabilní symbol: 2101106342
+
+Forma úhrady: Bankovním převodem | Konstantní symbol: 0008
+
+Specifický symbol:
+
+ 
+ 
+ 
+
+   
+ 
+
+   
+    
+
+Cena/MJ Celkem
+Cena/MJ po slevě bez DPH
+
+cc-320 Brusič nožů CC-320 1,000 ks 2829,00 | 5/30% 1 881,29 1 881,29 21%
+CC-1520 Brusič nožů CC-1520 1,000: ks 4250,00 | 5/30% 2 826,25 2 826,25 21%
+
+EB-61030 Lopata na pizzu kulatá pr. 255 mm 1,000 ks 445,00 5/30% 295,93 295,93 21%
+dl.620mm
+
+ 
+       
+              
+           
+         
+    
+           
+            
+         
+               
+         
+           
+               
+              
+            
+            
+        
+          
+            
+            
+
+    
+
+Kód Název zboží Množství MJ
+
+ 
+
+ 
+
+C-6544-400 Rukavice pekařské - 1 pár 1,000 ks 268,00 | 5/30% 178,22 178,22 21%
+EB-61030 Lopata na pizzu kulatá pr. 255 mm 1,000 ks 445,00 | 5/30% 295,93 295,93. 21%
+dl.620mm
+P-1740-32 Plech na pizzu kulatý pr. 320 mm 1,000 ks 152,00 5/30% 101,08 101,08 21%
+R-1100CT-110 | Podnos Camtread servírovací protiskluzový 1,000 ks 195,00 5/25% 138,94 138,94 21%
+kulatý černý, pr. 28 cm
+BR-190210 Cortina 255 ml 4,000 ks 14,00 | 5/20% 10,64 42,56 21%
+DX-513510 Šálek s ouškem Gigogne 22 cl 4,000 ks 22,00 5/20% 16,72 66,88 21%
+ET-319-2 Verona lžíce jídelní 4,000 ks 16,00 | 5/30% 10,64 42,56 21%
+ET-319-3 Verona lžička na kávu 8,000 ks 8,00 | 5/30% 9,32 42,56. 21%
+ET-319-5 Verona nůž jídelní 4,000 ks 26,00 | 5/30% 17,29 69,16 21%
+IL.-400-60 Non-stick konvička Easy 0,60 I 1,000 ks 451,00 5/30% 299,92 299,92 21%
+C-1747-33 Síto na pizzu pr. 330mm 1,000 ks 155,00 5/30% 103,08 103,08 21%
+ET-982-40 Salsa nůž na máslo 41g 6,000 ks 51,00 | 5/30% 33,92 203,52 21%
+V-4000-25 Tres lžíce na latté/limonádu 6,000 ks 36,00 5/30% 23,94 143,64 21%
+BSN-1111 Jednorázové bombičky - 10 ks 1,000 ks 95,00 5/25% 67,64 67,64 21%
+BSN-1151 Jednorázové bombičky - 50 ks 1,000 ks 395,00 5/25% 281,44 281,44 21%
+
+           
+
+   
+
+ 
+
+USRO0005 - myWAC 5.4 ©1998-2021 myWAC TECHNOLOGIES s.r.o., https://www.mywac.cz Tisk dne: 30.7.2021 15:11:03 Strana 1/2
