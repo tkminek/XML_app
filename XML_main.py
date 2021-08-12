@@ -42,13 +42,22 @@ class ExcelInfo():
                 }
         
     def client_info(self):
-        self._C_ico= self._df.iloc[self._index].loc['Ico']
-        self._client_dict= call_ares(str(int(self._C_ico)))
-        self._C_company= self._client_dict["legal"]["company_name"]
-        self._C_city= self._client_dict["address"]["city"]
-        self._C_street= self._client_dict["address"]["street"]
-        self._C_zip= self._client_dict["address"]["zip_code"]
-        self._C_dic= self._client_dict["legal"]["company_vat_id"]
+        self._C_ico= int(self._df.iloc[self._index].loc['ICO'])
+        if len(str(self._C_ico))<=8 and len(str(self._C_ico))>=3:
+            self._client_dict= call_ares(str(int(self._C_ico)))
+            self._C_company= self._client_dict["legal"]["company_name"]
+            self._C_city= self._client_dict["address"]["city"]
+            self._C_street= self._client_dict["address"]["street"]
+            self._C_zip= self._client_dict["address"]["zip_code"]
+            self._C_dic= self._client_dict["legal"]["company_vat_id"]
+        else:
+            self._client_dict="unknow"
+            self._C_company= "unknow"
+            self._C_city= "unknow"
+            self._C_street= "unknow"
+            self._C_zip= "unknow"
+            self._C_dic= "unknow"
+
         return {
                 "C_ico":self._C_ico,
                 "C_company": self._C_company,
