@@ -4,6 +4,9 @@ from time import sleep
 from ares_util.ares import call_ares
 import os
 import numpy
+import base36
+
+
 
 class ExcelInfo():
     def __init__(self,nazev,index,excel_list):
@@ -184,6 +187,8 @@ def excel_info(facture_name,excel_list):
     index_konce = excel.shape[0]
     return(index_konce)
 
+
+
 def prijate_faktury(excel_list,poc_cislo_faktury_prijate,facture_name):
     index_zacatku_prijate=0
     index_konce_prijate=excel_info(facture_name,excel_list)
@@ -198,11 +203,14 @@ def prijate_faktury(excel_list,poc_cislo_faktury_prijate,facture_name):
         client_dic=facture.client_info()
         export_xml=ExportXML(main_dic,client_dic,vlastnik_dic,poc_cislo_faktury_prijate)
         export_xml.export_prijata_xml()
-        poc_cislo_faktury_prijate+=1
+        delka_p=len(poc_cislo_faktury_prijate.split("F")[1])
+        format_d="{:0"+str(delka_p)+"d}"
+        poc_cislo_faktury_prijate=str(poc_cislo_faktury_prijate.split("F")[0])+"F"+str(format_d.format(int(poc_cislo_faktury_prijate.split("F")[1])+1))
         index_zacatku_prijate += 1
         sleep(0.02)
     end_info(facture_name+"_prijate")
     print("XML FILE EXPORT : prijate faktury - DONE")
+    
 
 def vydane_faktury(excel_list, poc_cislo_faktury_vydana,facture_name):
     index_zacatku_vydana=0
@@ -218,7 +226,9 @@ def vydane_faktury(excel_list, poc_cislo_faktury_vydana,facture_name):
         client_dic = facture.client_info()
         export_xml = ExportXML(main_dic, client_dic, vlastnik_dic, poc_cislo_faktury_vydana)
         export_xml.export_vydana_xml()
-        poc_cislo_faktury_vydana+=1
+        delka_v=len(poc_cislo_faktury_vydana)
+        format_d="{:0"+str(delka_v)+"d}"
+        poc_cislo_faktury_vydana=format_d.format((int(poc_cislo_faktury_vydana))+1)
         index_zacatku_vydana+=1
         sleep(0.02)
     end_info(facture_name+"_vydane")
@@ -231,9 +241,9 @@ def main():
     except:
         print("NO FACTURE EXCEl FILE IN ...\FACTURES")
     #   PRIJATE FAKTURY   #
-    prijate_faktury(excel_list="EK RCH", poc_cislo_faktury_prijate=1,facture_name=facture_name)
+    #prijate_faktury(excel_list="EK RCH", poc_cislo_faktury_prijate="21F0829",facture_name=facture_name)
     #   VYDANE FAKTURY   #
-    vydane_faktury(excel_list="VK RCH", poc_cislo_faktury_vydana=1, facture_name=facture_name)
+    vydane_faktury(excel_list="VK RCH", poc_cislo_faktury_vydana="210511", facture_name=facture_name)
 
 if __name__ == '__main__':
     main()
