@@ -45,7 +45,7 @@
 					</typ:address>
 				</inv:myIdentity>
 				<inv:paymentType>
-					<typ:ids>Pøíkazem</typ:ids>
+					<typ:ids>Príkazem</typ:ids>
 					<typ:paymentType>draft</typ:paymentType>
 				</inv:paymentType>
 				<inv:account>

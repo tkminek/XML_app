@@ -1,12 +1,45 @@
 import pandas as pd
-from tqdm import tqdm,trange
+from tqdm import tqdm
 from time import sleep
 from ares_util.ares import call_ares
 import os
-import numpy
-import base36
+import numpy as np
 
 
+
+class ExcelDatabase():
+    def __init__(self,nazev):
+        self._nazev=nazev
+        self._excel = pd.read_excel("TEMP/" + str(self._nazev) + ".xlsx", sheet_name="database")
+        self._df = pd.DataFrame(self._excel)
+        
+    def database_info(self,ico_iden):
+        self._ico_iden=float(ico_iden)
+        self._ico="unknow"
+        self._company="unknow"
+        self._city="unknow"
+        self._street="unknow"
+        self._zip="unknow"
+        self._dic="unknow"
+        for i in range(len(self._df)):
+            if self._df.iloc[i].loc['IČ'].item()==self._ico_iden:
+                print("ano")
+                self._ico=self._df.iloc[i].loc['IČ']
+                self._company=self._df.iloc[i].loc['Firma']
+                self._city=self._df.iloc[i].loc['Obec']
+                self._street=self._df.iloc[i].loc['Ulice']
+                self._zip=self._df.iloc[i].loc['PSČ']
+                self._dic=self._df.iloc[i].loc['DIČ']
+
+        return {
+                "C_ico":self._ico,
+                "C_company":self._company,
+                "C_city": self._city,
+                "C_street":self._street,
+                "C_zip": self._zip,
+                "C_dic":self._dic
+                  }
+     
 
 class ExcelInfo():
     def __init__(self,nazev,index,excel_list):
@@ -18,7 +51,7 @@ class ExcelInfo():
         self._castka= self._df.iloc[self._index].loc['Fremdwährung']
         self._cislo_faktury= self._df.iloc[self._index].loc['Referenz']
         self._datum= str(self._datum_p.split(".")[2]) + "-" + str(self._datum_p.split(".")[1]) + "-" + str(self._datum_p.split(".")[0])
-        self._cislo_faktury2 = self._df.iloc[self._index].loc['Belegnr']
+        self._cislo_faktury2 = int(self._df.iloc[self._index].loc['Belegnr'])
 
     def main_info(self):
         return {
@@ -46,13 +79,22 @@ class ExcelInfo():
         
     def client_info(self):
         self._C_ico= int(self._df.iloc[self._index].loc['ICO'])
-        if len(str(self._C_ico))<=8 and len(str(self._C_ico))>=3:
+        if len(str(self._C_ico))<=8 and len(str(self._C_ico))>=4:
             self._client_dict= call_ares(str(int(self._C_ico)))
             self._C_company= self._client_dict["legal"]["company_name"]
             self._C_city= self._client_dict["address"]["city"]
             self._C_street= self._client_dict["address"]["street"]
             self._C_zip= self._client_dict["address"]["zip_code"]
             self._C_dic= self._client_dict["legal"]["company_vat_id"]
+        elif len(str(self._C_ico))<=3: 
+            pohoda_database=ExcelDatabase("database")
+            client_info=pohoda_database.database_info(self._C_ico)
+            self._C_ico=client_info["C_ico"]
+            self._C_company=client_info["C_company"]
+            self._C_city=client_info["C_city"]
+            self._C_street=client_info["C_street"]
+            self._C_zip=client_info["C_zip"]
+            self._C_dic=client_info["C_dic"]
         else:
             self._client_dict="unknow"
             self._C_company= "unknow"
@@ -234,6 +276,8 @@ def vydane_faktury(excel_list, poc_cislo_faktury_vydana,facture_name):
     end_info(facture_name+"_vydane")
     print("XML FILE EXPORT : vydane faktury - DONE")
 
+
+
 def main():
     path=os.getcwd()
     try:
@@ -244,6 +288,8 @@ def main():
     #prijate_faktury(excel_list="EK RCH", poc_cislo_faktury_prijate="21F0829",facture_name=facture_name)
     #   VYDANE FAKTURY   #
     vydane_faktury(excel_list="VK RCH", poc_cislo_faktury_vydana="210511", facture_name=facture_name)
+
+
 
 if __name__ == '__main__':
     main()
