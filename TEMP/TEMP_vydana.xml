@@ -6,7 +6,7 @@
 				<inv:number>
 					<typ:numberRequested>pohoda_facture_number</typ:numberRequested>
 				</inv:number>
-				<inv:symVar>pohoda_facture_number</inv:symVar>
+				<inv:symVar>pohoda_number</inv:symVar>
 				<inv:date>datum</inv:date>
 				<inv:dateTax>datum</inv:dateTax>
 				<inv:dateDue>datum</inv:dateDue>

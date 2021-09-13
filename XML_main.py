@@ -3,7 +3,7 @@ from tqdm import tqdm
 from time import sleep
 from ares_util.ares import call_ares
 import os
-
+import re
 
 
 
@@ -137,8 +137,11 @@ class ExportXML():
         facture_file=open("OUTPUT/"+str(self._nazev)+"_prijate.xml","a")
         for row in file_temp:
             zmena_dict={
-                        "<typ:numberRequested>pohoda_facture_number</typ:numberRequested>": "<typ:numberRequested>"+str(self._poc_cislo_faktury)+"</typ:numberRequested>",
-                        "<inv:symVar>facture_number</inv:symVar>":"<inv:symVar>"+str(self._cislo_faktury)+"</inv:symVar>",
+                        # S CISLEM FAKTURY #
+                        #"<typ:numberRequested>pohoda_facture_number</typ:numberRequested>": "<typ:numberRequested>"+str(self._poc_cislo_faktury)+"</typ:numberRequested>",
+                        # BEZ CISLA FAKTURY #
+                        "<typ:numberRequested>pohoda_facture_number</typ:numberRequested>": "<typ:numberRequested></typ:numberRequested>",
+                        "<inv:symVar>facture_number</inv:symVar>":"<inv:symVar>"+re.sub('\D','',str(self._cislo_faktury))+"</inv:symVar>",
                         "<inv:originalDocument>facture_number</inv:originalDocument>":"<inv:originalDocument>"+str(self._cislo_faktury)+"</inv:originalDocument>",
                         "<inv:date>datum</inv:date>":"<inv:date>"+str(self._datum)+"</inv:date>",
                         "<inv:dateTax>datum</inv:dateTax>":"<inv:dateTax>"+str(self._datum)+"</inv:dateTax>",
@@ -177,8 +180,11 @@ class ExportXML():
                self._cislo_faktury = self._cislo_faktury2
         for row in file_temp:
             zmena_dict={
-                        "<typ:numberRequested>pohoda_facture_number</typ:numberRequested>":"<typ:numberRequested>"+str(self._poc_cislo_faktury)+"</typ:numberRequested>",
-                        "<inv:symVar>pohoda_facture_number</inv:symVar>":"<inv:symVar>"+str(self._poc_cislo_faktury)+"</inv:symVar>",
+                        # S CISLEM FAKTURY #
+                        #"<typ:numberRequested>pohoda_facture_number</typ:numberRequested>":"<typ:numberRequested>"+str(self._poc_cislo_faktury)+"</typ:numberRequested>",
+                        # BEZ CISLA FAKTURY FAKTURY #
+                        "<typ:numberRequested>pohoda_facture_number</typ:numberRequested>": "<typ:numberRequested></typ:numberRequested>",
+                        "<inv:symVar>pohoda_number</inv:symVar>":"<inv:symVar>"+str(self._cislo_faktury)+"</inv:symVar>",
                         "<inv:date>datum</inv:date>": "<inv:date>" + str(self._datum) + "</inv:date>",
                         "<inv:dateTax>datum</inv:dateTax>": "<inv:dateTax>" + str(self._datum) + "</inv:dateTax>",
                         "<inv:dateDue>datum</inv:dateDue>": "<inv:dateDue>" + str(self._datum) + "</inv:dateDue>",
