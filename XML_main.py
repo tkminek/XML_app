@@ -71,7 +71,10 @@ class ExcelInfo():
                 }
         
     def client_info(self):
-        self._C_ico= int(self._df.iloc[self._index].loc['ICO'])
+        if pd.isnull(self._df.iloc[self._index].loc['ICO']):
+            self._C_ico="unknow"
+        else:
+            self._C_ico= int(self._df.iloc[self._index].loc['ICO'])
         try:
             self._client_dict= call_ares(str(int(self._C_ico)))
             self._C_company= self._client_dict["legal"]["company_name"]
@@ -287,7 +290,8 @@ def main():
     #   PRIJATE FAKTURY   #
     prijate_faktury(excel_list="EK RCH", poc_cislo_faktury_prijate="21F0883",facture_name=facture_name)
     #   VYDANE FAKTURY   #
-    vydane_faktury(excel_list="VK RCH", poc_cislo_faktury_vydana="210533", facture_name=facture_name)
+    # musis zadat poc_cislo_faktury_vydana!!!!!!!!!!!!!!!!!!!! #
+    vydane_faktury(excel_list="VK RCH", poc_cislo_faktury_vydana="210615", facture_name=facture_name)
 
 
 
