@@ -238,9 +238,9 @@ def prijate_faktury(excel_list,poc_cislo_faktury_prijate,facture_name):
     index_zacatku_prijate=0
     index_konce_prijate=excel_info(facture_name,excel_list)
     start_info(facture_name+"_prijate")
-    p_bar= tqdm([x for x in range(index_zacatku_prijate,index_konce_prijate-1)])
+    p_bar= tqdm([x for x in range(index_zacatku_prijate,index_konce_prijate)])
     for i in p_bar:
-        info=f"Faktura prijata cislo: {i+2}"
+        info=f"Faktura prijata cislo: {i+1}"
         p_bar.set_description("Processing %s" %info)
         facture=ExcelInfo(facture_name,index_zacatku_prijate,excel_list)
         main_dic=facture.main_info()
@@ -261,9 +261,9 @@ def vydane_faktury(excel_list, poc_cislo_faktury_vydana,facture_name):
     index_zacatku_vydana=0
     index_konce_vydana=excel_info(facture_name,excel_list)
     start_info(facture_name+"_vydane")
-    p_bar= tqdm([x for x in range(index_zacatku_vydana,index_konce_vydana-1)])
+    p_bar= tqdm([x for x in range(index_zacatku_vydana,index_konce_vydana)])
     for i in p_bar:
-        info=f"Faktura vydana cislo: {i+2}"
+        info=f"Faktura vydana cislo: {i+1}"
         p_bar.set_description("Processing %s" %info)
         facture = ExcelInfo(facture_name, index_zacatku_vydana, excel_list)
         main_dic = facture.main_info()
@@ -291,7 +291,7 @@ def main():
     prijate_faktury(excel_list="EK RCH", poc_cislo_faktury_prijate="21F0883",facture_name=facture_name)
     #   VYDANE FAKTURY   #
     # musis zadat poc_cislo_faktury_vydana!!!!!!!!!!!!!!!!!!!! #
-    vydane_faktury(excel_list="VK RCH", poc_cislo_faktury_vydana="210615", facture_name=facture_name)
+    #vydane_faktury(excel_list="VK RCH", poc_cislo_faktury_vydana="210615", facture_name=facture_name)
 
 
 
