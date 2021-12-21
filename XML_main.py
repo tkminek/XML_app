@@ -14,9 +14,8 @@ class ExcelDatabase():
         self._df = pd.DataFrame(self._excel)
         
     def database_info(self,ico_iden):
-        self._ico_iden=float(ico_iden)
         for i in range(len(self._df)):
-            if self._df.iloc[i].loc['IČ'].item()==self._ico_iden:
+            if self._df.iloc[i].loc['IČ'].item()==ico_iden:
                 self._ico=int(self._df.iloc[i].loc['IČ'])
                 self._company=self._df.iloc[i].loc['Firma']
                 self._city=self._df.iloc[i].loc['Obec']
@@ -287,11 +286,12 @@ def main():
         facture_name=os.listdir(path+"\FACTURES")[0].split(".")[:-1][0]
     except:
         print("NO FACTURE EXCEl FILE IN ...\FACTURES")
+        exit()
     #   PRIJATE FAKTURY   #
     prijate_faktury(excel_list="EK RCH", poc_cislo_faktury_prijate="21F0883",facture_name=facture_name)
     #   VYDANE FAKTURY   #
     # musis zadat poc_cislo_faktury_vydana!!!!!!!!!!!!!!!!!!!! #
-    #vydane_faktury(excel_list="VK RCH", poc_cislo_faktury_vydana="210615", facture_name=facture_name)
+    #vydane_faktury(excel_list="VK RCH", poc_cislo_faktury_vydana="210655", facture_name=facture_name)
 
 
 
