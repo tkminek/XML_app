@@ -285,6 +285,7 @@ def main():
     try:
         facture_name=os.listdir(path+"\FACTURES")[0].split(".")[:-1][0]
     except:
+        facture_name=None
         print("NO FACTURE EXCEl FILE IN ...\FACTURES")
         exit()
     #   PRIJATE FAKTURY   #
